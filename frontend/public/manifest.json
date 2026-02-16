@@ -1,0 +1,9 @@
+{
+  "short_name": "ResumePro",
+  "name": "AI Resume Analyzer",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#FF3366",
+  "background_color": "#0F0F0F"
+}

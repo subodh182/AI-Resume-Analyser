@@ -1,0 +1,115 @@
+.dashboard-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.dashboard-header h1 {
+  font-size: 42px;
+  font-weight: 800;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-state svg {
+  font-size: 80px;
+  color: var(--gray);
+  margin-bottom: 24px;
+}
+
+.empty-state h2 {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  color: var(--gray);
+  margin-bottom: 32px;
+}
+
+.resumes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.resume-card {
+  background: linear-gradient(135deg, rgba(31, 31, 31, 0.8), rgba(15, 15, 15, 0.9));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.resume-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: 0 12px 48px var(--shadow);
+}
+
+.resume-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: 12px;
+  font-size: 28px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.resume-info {
+  flex: 1;
+}
+
+.resume-info h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resume-stats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.resume-info p {
+  font-size: 13px;
+  color: var(--gray);
+}
+
+.view-icon {
+  font-size: 24px;
+  color: var(--gray);
+  flex-shrink: 0;
+}
