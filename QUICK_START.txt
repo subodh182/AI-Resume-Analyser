@@ -1,0 +1,96 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                                ║
+║    🚀 AI RESUME ANALYZER - QUICK START GUIDE                  ║
+║                                                                ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📦 WHAT YOU HAVE
+─────────────────────────────────────────────────────────────────
+✅ Complete Backend API (Node.js + Express + MongoDB)
+✅ Modern Frontend (React.js with custom UI)
+✅ 15+ API Endpoints
+✅ Authentication System
+✅ Resume Analysis Engine
+✅ Job Matching Algorithm
+✅ Beautiful, Responsive Design
+
+⚡ 3-STEP SETUP (15 minutes)
+─────────────────────────────────────────────────────────────────
+
+STEP 1: Backend (5 min)
+  cd backend
+  npm install
+  cp .env.example .env
+  [Edit .env with your MongoDB URI]
+  npm run dev
+
+STEP 2: Frontend (3 min)
+  [Open new terminal]
+  cd frontend
+  npm install
+  npm start
+
+STEP 3: MongoDB (5 min)
+  Option A: Install MongoDB locally
+  Option B: Create MongoDB Atlas account (recommended)
+
+🎯 OPEN & TEST
+─────────────────────────────────────────────────────────────────
+1. Open: http://localhost:3000
+2. Click "Get Started"
+3. Register an account
+4. Upload a PDF resume
+5. See instant AI analysis!
+
+📚 FILES TO CHECK
+─────────────────────────────────────────────────────────────────
+• README.md - Complete documentation
+• SETUP.md - Detailed setup instructions
+• PROJECT_OVERVIEW.md - Feature breakdown
+
+🔧 CONFIGURATION
+─────────────────────────────────────────────────────────────────
+Backend: Edit backend/.env
+  - MONGODB_URI (required)
+  - JWT_SECRET (required)
+  - EMAIL settings (optional)
+
+Frontend: Works out of the box!
+  - Optional: Create .env for custom API URL
+
+⚠️ COMMON ISSUES
+─────────────────────────────────────────────────────────────────
+• Port already in use? Change in .env
+• MongoDB connection error? Check MONGODB_URI
+• Upload fails? Check backend/uploads folder exists
+
+🎨 CUSTOMIZE
+─────────────────────────────────────────────────────────────────
+Colors: frontend/src/index.css (CSS variables)
+Logo: frontend/src/components/Navbar.js
+API: backend/routes/*.js
+
+🚀 DEPLOY
+─────────────────────────────────────────────────────────────────
+Backend: Heroku, Railway, DigitalOcean
+Frontend: Vercel, Netlify
+Database: MongoDB Atlas
+
+💡 TIPS
+─────────────────────────────────────────────────────────────────
+• Use MongoDB Atlas for easy cloud database
+• Test API with Postman
+• Check browser console for errors
+• Read inline code comments for understanding
+
+📈 NEXT STEPS
+─────────────────────────────────────────────────────────────────
+1. Complete setup
+2. Test all features
+3. Customize colors/branding
+4. Add your own features
+5. Deploy to production
+
+Need help? Check README.md for detailed documentation!
+
+Happy Coding! 🎉
