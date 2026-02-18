@@ -1,6 +1,7 @@
 const Job = require('../models/Job');
 const Resume = require('../models/Resume');
 const { calculateJobMatch } = require('../utils/jobMatcher');
+const { fetchAllJobs } = require('../services/jobAPI');
 
 // @desc    Create job posting
 // @route   POST /api/jobs
@@ -29,43 +30,81 @@ exports.createJob = async (req, res) => {
   }
 };
 
-// @desc    Get all jobs
+// @desc    Get all jobs (internal + external)
 // @route   GET /api/jobs
 // @access  Public
 exports.getJobs = async (req, res) => {
   try {
-    const { status, type, search, page = 1, limit = 10 } = req.query;
+    const { status, type, search, page = 1, limit = 10, source = 'all' } = req.query;
 
-    const query = {};
-    
-    if (status) {
-      query.status = status;
-    } else {
-      query.status = 'active'; // Only show active jobs by default
+    let allJobs = [];
+
+    // Fetch internal jobs (from database)
+    if (source === 'all' || source === 'internal') {
+      const query = {};
+      
+      if (status) {
+        query.status = status;
+      } else {
+        query.status = 'active';
+      }
+
+      if (type) {
+        query.type = type;
+      }
+
+      if (search) {
+        query.$text = { $search: search };
+      }
+
+      const internalJobs = await Job.find(query)
+        .populate('postedBy', 'name email')
+        .sort({ createdAt: -1 })
+        .limit(limit * 1)
+        .skip((page - 1) * limit);
+
+      // Mark as internal
+      const formattedInternal = internalJobs.map(job => ({
+        ...job.toObject(),
+        source: 'internal',
+        isInternal: true
+      }));
+
+      allJobs = [...formattedInternal];
     }
 
-    if (type) {
-      query.type = type;
+    // Fetch external jobs (from APIs)
+    if (source === 'all' || source === 'external') {
+      try {
+        console.log('🔄 Fetching external jobs...');
+        const externalJobs = await fetchAllJobs(search || '', '');
+        
+        // Mark as external
+        const formattedExternal = externalJobs.map(job => ({
+          _id: `ext-${job.id}`,
+          ...job,
+          isInternal: false,
+          applicants: [],
+          views: 0,
+          status: 'active',
+          createdAt: job.postedDate || new Date()
+        }));
+
+        allJobs = [...allJobs, ...formattedExternal];
+        console.log(`✅ Total jobs: ${allJobs.length}`);
+      } catch (error) {
+        console.error('❌ Error fetching external jobs:', error.message);
+      }
     }
 
-    if (search) {
-      query.$text = { $search: search };
-    }
-
-    const jobs = await Job.find(query)
-      .populate('postedBy', 'name email')
-      .sort({ createdAt: -1 })
-      .limit(limit * 1)
-      .skip((page - 1) * limit);
-
-    const count = await Job.countDocuments(query);
+    const count = await Job.countDocuments({ status: 'active' });
 
     res.status(200).json({
       success: true,
-      count,
+      count: allJobs.length,
       totalPages: Math.ceil(count / limit),
       currentPage: page,
-      jobs
+      jobs: allJobs
     });
   } catch (error) {
     console.error('Get jobs error:', error);
