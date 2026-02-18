@@ -4,7 +4,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const serverless = require('serverless-http');
-require('dotenv').config();
 
 const authRoutes = require('../routes/authRoutes');
 const resumeRoutes = require('../routes/resumeRoutes');
@@ -24,24 +23,24 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rate Limiting
+// Rate limit
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100
 });
 app.use('/api/', limiter);
 
-// Root Route
+// Root route
 app.get('/', (req, res) => {
-  res.json({ message: "Backend is running 🚀" });
+  res.json({ message: "Backend is running on Vercel 🚀" });
 });
 
-// Health
+// Health check
 app.get('/health', (req, res) => {
   res.json({ status: "OK" });
 });
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/jobs', jobRoutes);
@@ -49,7 +48,7 @@ app.use('/api/users', userRoutes);
 
 app.use(errorHandler);
 
-// MongoDB Connection (connect once)
+// MongoDB connection (safe for serverless)
 if (!mongoose.connection.readyState) {
   mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("MongoDB Connected"))
