@@ -41,9 +41,10 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/uploads', express.static('uploads'));
 
 // Health Check
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Server is running' });
+app.get('/', (req, res) => {
+  res.json({ message: "Backend is running 🚀" });
 });
+
 
 // API Routes
 app.use('/api/auth', authRoutes);
