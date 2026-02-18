@@ -16,9 +16,11 @@ const app = express();
 
 // Security Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
+  origin: '*',
+  methods: ['GET','POST','PUT','DELETE'],
+  allowedHeaders: ['Content-Type','Authorization']
 }));
+
 
 
 // Rate Limiting
