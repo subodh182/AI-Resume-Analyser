@@ -75,55 +75,157 @@
   font-size: 16px;
 }
 
+/* Stats Section */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
   padding-top: 40px;
   border-top: 1px solid var(--border);
   animation: fadeInUp 0.6s ease-out 0.4s backwards;
 }
 
 .stat-item {
-  text-align: left;
+  background: rgba(102, 126, 234, 0.08);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  background: rgba(102, 126, 234, 0.12);
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+}
+
+.stat-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .stat-value {
-  font-size: 36px;
-  font-weight: 800;
-  color: var(--primary);
-  margin-bottom: 8px;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 900;
+  color: var(--primary-light);
+  line-height: 1;
   letter-spacing: -0.02em;
+  font-family: 'Inter', sans-serif;
 }
 
 .stat-label {
-  font-size: 14px;
-  color: var(--gray);
-  font-weight: 500;
+  font-size: clamp(13px, 2vw, 15px);
+  color: var(--text-light);
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+/* Desktop: 2 columns for better text fit */
+@media (min-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+  
+  .stat-value {
+    font-size: 42px;
+  }
+  
+  .stat-label {
+    font-size: 15px;
+  }
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 968px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .stat-item {
+    padding: 20px 16px;
+  }
+}
+
+/* Mobile: 2 columns with smaller text */
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding-top: 32px;
+  }
+  
+  .stat-item {
+    padding: 18px 12px;
+  }
+  
+  .stat-value {
+    font-size: 28px;
+  }
+  
+  .stat-label {
+    font-size: 12px;
+  }
+}
+
+/* Very Small Mobile: Stack if needed */
+@media (max-width: 400px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .stat-item {
+    padding: 16px 10px;
+  }
+  
+  .stat-value {
+    font-size: 24px;
+  }
+  
+  .stat-label {
+    font-size: 11px;
+    line-height: 1.2;
+  }
 }
 
 /* Hero Visual */
+/* Hero Visual - Responsive Grid */
 .hero-visual {
   position: relative;
   flex: 1;
-  height: 600px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
   align-items: center;
   justify-content: center;
+  padding: 40px 20px;
 }
 
 .floating-card {
-  position: absolute;
-  background: linear-gradient(135deg, rgba(31, 31, 31, 0.9), rgba(15, 15, 15, 0.95));
-  border: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(26, 26, 62, 0.9), rgba(37, 37, 80, 0.95));
+  border: 2px solid var(--border);
   border-radius: 20px;
   padding: 24px;
   display: flex;
   align-items: center;
   gap: 16px;
+  -webkit-backdrop-filter: blur(20px); /* Safari support */
   backdrop-filter: blur(20px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  animation: float 6s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.floating-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 70px var(--shadow-lg);
+  border-color: var(--primary);
 }
 
 .floating-card .card-icon {
@@ -132,11 +234,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-radius: 14px;
+  background: var(--gradient-primary);
+  border-radius: 16px;
   font-size: 28px;
   color: white;
   box-shadow: 0 8px 24px var(--shadow);
+  flex-shrink: 0;
 }
 
 .card-content {
@@ -146,43 +249,125 @@
 .card-title {
   font-size: 13px;
   font-weight: 600;
-  color: var(--gray);
-  margin-bottom: 4px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 1px;
 }
 
 .card-score {
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--light);
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--text-primary);
   letter-spacing: -0.02em;
+  font-family: 'Inter', sans-serif;
 }
 
-.card-1 {
-  top: 10%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.card-2 {
-  top: 45%;
-  right: 5%;
-  animation-delay: 1s;
-}
-
-.card-3 {
-  bottom: 15%;
-  left: 20%;
-  animation-delay: 2s;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
+/* Desktop - Floating Animation */
+@media (min-width: 969px) {
+  .hero-visual {
+    height: 600px;
+    position: relative;
   }
-  50% {
-    transform: translateY(-20px);
+
+  .floating-card {
+    position: absolute;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .card-1 {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .card-2 {
+    top: 45%;
+    right: 5%;
+    animation-delay: 1s;
+  }
+
+  .card-3 {
+    bottom: 15%;
+    left: 20%;
+    animation-delay: 2s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+}
+
+/* Tablet & Mobile - Stacked Grid */
+@media (max-width: 968px) {
+  .hero-visual {
+    height: auto;
+    padding: 20px 16px;
+  }
+
+  .floating-card {
+    width: 100%;
+  }
+
+  .card-1, .card-2, .card-3 {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+  }
+}
+
+/* Mobile Compact */
+@media (max-width: 640px) {
+  .hero-visual {
+    gap: 16px;
+    padding: 16px 12px;
+  }
+
+  .floating-card {
+    padding: 20px 16px;
+  }
+
+  .floating-card .card-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
+
+  .card-title {
+    font-size: 12px;
+  }
+
+  .card-score {
+    font-size: 28px;
+  }
+}
+
+/* Very Small Mobile */
+@media (max-width: 400px) {
+  .hero-visual {
+    gap: 12px;
+  }
+
+  .floating-card {
+    padding: 16px 14px;
+    gap: 12px;
+  }
+
+  .floating-card .card-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+
+  .card-title {
+    font-size: 11px;
+  }
+
+  .card-score {
+    font-size: 24px;
   }
 }
 

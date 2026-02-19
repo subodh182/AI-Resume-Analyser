@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import api from '../services/api';
-import { FiArrowLeft, FiDownload, FiCheckCircle, FiAlertCircle, FiTrendingUp } from 'react-icons/fi';
+import { FiArrowLeft, FiCheckCircle, FiAlertCircle, FiTrendingUp, FiAward } from 'react-icons/fi';
 import './ResumeAnalysis.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
@@ -32,7 +32,7 @@ const ResumeAnalysis = () => {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
-        <p>Analyzing your resume...</p>
+        <p className="loading-text">Analyzing your resume...</p>
       </div>
     );
   }
@@ -40,7 +40,7 @@ const ResumeAnalysis = () => {
   if (!resume) {
     return (
       <div className="error-container">
-        <h2>Resume not found</h2>
+        <h2 className="error-title">Resume not found</h2>
         <Link to="/dashboard" className="btn btn-primary">Go to Dashboard</Link>
       </div>
     );
@@ -53,7 +53,7 @@ const ResumeAnalysis = () => {
     labels: ['ATS Score', 'Remaining'],
     datasets: [{
       data: [analysis.atsScore, 100 - analysis.atsScore],
-      backgroundColor: ['#FF3366', 'rgba(255, 255, 255, 0.1)'],
+      backgroundColor: ['#4ECDC4', 'rgba(255, 255, 255, 0.1)'],
       borderWidth: 0
     }]
   };
@@ -62,7 +62,7 @@ const ResumeAnalysis = () => {
     labels: ['Overall Score', 'Remaining'],
     datasets: [{
       data: [analysis.overallScore, 100 - analysis.overallScore],
-      backgroundColor: ['#6366F1', 'rgba(255, 255, 255, 0.1)'],
+      backgroundColor: ['#FF6B6B', 'rgba(255, 255, 255, 0.1)'],
       borderWidth: 0
     }]
   };
@@ -71,9 +71,9 @@ const ResumeAnalysis = () => {
   const skillsChartData = {
     labels: analysis.skillsFound.slice(0, 8).map(s => s.skill),
     datasets: [{
-      label: 'Skills Detected',
+      label: 'Skills',
       data: analysis.skillsFound.slice(0, 8).map(() => 1),
-      backgroundColor: '#10B981',
+      backgroundColor: '#95E1D3',
     }]
   };
 
@@ -94,22 +94,22 @@ const ResumeAnalysis = () => {
     scales: {
       y: { display: false },
       x: { 
-        ticks: { color: '#64748B' },
+        ticks: { color: '#C7C7C7', font: { size: 11 } },
         grid: { display: false }
       }
     }
   };
 
   const getScoreColor = (score) => {
-    if (score >= 80) return '#10B981';
-    if (score >= 60) return '#F59E0B';
-    return '#EF4444';
+    if (score >= 80) return '#95E1D3';
+    if (score >= 60) return '#FFE66D';
+    return '#FF6B6B';
   };
 
   const getPriorityColor = (priority) => {
-    if (priority === 'high') return '#EF4444';
-    if (priority === 'medium') return '#F59E0B';
-    return '#10B981';
+    if (priority === 'high') return '#FF6B6B';
+    if (priority === 'medium') return '#FFE66D';
+    return '#95E1D3';
   };
 
   return (
@@ -118,12 +118,18 @@ const ResumeAnalysis = () => {
         {/* Header */}
         <div className="analysis-header">
           <Link to="/dashboard" className="back-btn">
-            <FiArrowLeft /> Back to Dashboard
+            <FiArrowLeft /> <span>Back to Dashboard</span>
           </Link>
-          <h1>{resume.fileName}</h1>
-          <p className="upload-date">
-            Uploaded on {new Date(resume.createdAt).toLocaleDateString()}
-          </p>
+          <div className="header-content">
+            <h1 className="page-title">{resume.fileName}</h1>
+            <p className="upload-date">
+              Analyzed on {new Date(resume.createdAt).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </p>
+          </div>
         </div>
 
         {/* Score Cards */}
@@ -135,12 +141,15 @@ const ResumeAnalysis = () => {
                 <div className="score-value" style={{ color: getScoreColor(analysis.atsScore) }}>
                   {analysis.atsScore}
                 </div>
-                <div className="score-label">ATS Score</div>
+                <div className="score-label">ATS</div>
               </div>
             </div>
-            <p className="score-description">
-              Your resume's compatibility with Applicant Tracking Systems
-            </p>
+            <div className="score-info">
+              <h3 className="score-title">ATS Compatibility</h3>
+              <p className="score-description">
+                How well your resume performs with Applicant Tracking Systems
+              </p>
+            </div>
           </div>
 
           <div className="score-card">
@@ -153,24 +162,28 @@ const ResumeAnalysis = () => {
                 <div className="score-label">Overall</div>
               </div>
             </div>
-            <p className="score-description">
-              Combined score based on all factors
-            </p>
+            <div className="score-info">
+              <h3 className="score-title">Overall Quality</h3>
+              <p className="score-description">
+                Combined score based on all evaluation factors
+              </p>
+            </div>
           </div>
 
-          <div className="score-card">
+          <div className="score-card stats-card">
             <div className="stat-item">
-              <FiTrendingUp className="stat-icon" />
+              <div className="stat-icon"><FiTrendingUp /></div>
               <div className="stat-content">
                 <div className="stat-value">{analysis.readabilityScore}%</div>
-                <div className="stat-label">Readability</div>
+                <div className="stat-label">Readability Score</div>
               </div>
             </div>
+            <div className="stat-divider"></div>
             <div className="stat-item">
-              <FiCheckCircle className="stat-icon" />
+              <div className="stat-icon"><FiAward /></div>
               <div className="stat-content">
                 <div className="stat-value">{analysis.formattingScore}%</div>
-                <div className="stat-label">Formatting</div>
+                <div className="stat-label">Formatting Quality</div>
               </div>
             </div>
           </div>
@@ -178,34 +191,57 @@ const ResumeAnalysis = () => {
 
         {/* Skills Section */}
         <div className="analysis-section">
-          <h2><FiCheckCircle /> Skills Detected ({analysis.skillsFound.length})</h2>
-          <div className="skills-content">
-            <div className="skills-list">
-              {analysis.skillsFound.map((skill, index) => (
-                <span key={index} className="skill-badge badge-success">
-                  {skill.skill}
-                </span>
-              ))}
-              {analysis.skillsFound.length === 0 && (
-                <p className="empty-message">No skills detected. Add more technical skills to your resume.</p>
+          <div className="section-header">
+            <h2 className="section-title">
+              <FiCheckCircle className="section-icon" />
+              Skills Detected: <span className="highlight">{analysis.skillsFound.length}</span>
+            </h2>
+          </div>
+          
+          {analysis.skillsFound.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">💡</div>
+              <h3 className="empty-title">No skills detected</h3>
+              <p className="empty-description">
+                Add more technical skills to your resume to improve your ATS score and match with relevant jobs.
+              </p>
+            </div>
+          ) : (
+            <div className="skills-content">
+              <div className="skills-list">
+                {analysis.skillsFound.map((skill, index) => (
+                  <span key={index} className="skill-badge">
+                    {skill.skill}
+                  </span>
+                ))}
+              </div>
+              {analysis.skillsFound.length >= 8 && (
+                <div className="skills-chart">
+                  <h4 className="chart-title">Top Skills Distribution</h4>
+                  <Bar data={skillsChartData} options={barChartOptions} />
+                </div>
               )}
             </div>
-            {analysis.skillsFound.length > 0 && (
-              <div className="skills-chart">
-                <Bar data={skillsChartData} options={barChartOptions} />
-              </div>
-            )}
-          </div>
+          )}
         </div>
 
         {/* Sections Check */}
         <div className="analysis-section">
-          <h2><FiCheckCircle /> Resume Sections</h2>
+          <div className="section-header">
+            <h2 className="section-title">
+              <FiCheckCircle className="section-icon" />
+              Resume Sections
+            </h2>
+          </div>
           <div className="sections-grid">
             {Object.entries(analysis.sections).map(([key, value]) => (
               <div key={key} className={`section-item ${value ? 'present' : 'missing'}`}>
-                {value ? <FiCheckCircle /> : <FiAlertCircle />}
-                <span>{key.replace('has', '').replace(/([A-Z])/g, ' $1').trim()}</span>
+                <div className="section-icon-wrapper">
+                  {value ? <FiCheckCircle /> : <FiAlertCircle />}
+                </div>
+                <span className="section-name">
+                  {key.replace('has', '').replace(/([A-Z])/g, ' $1').trim()}
+                </span>
               </div>
             ))}
           </div>
@@ -214,7 +250,12 @@ const ResumeAnalysis = () => {
         {/* Improvements */}
         {analysis.improvements.length > 0 && (
           <div className="analysis-section">
-            <h2><FiAlertCircle /> Suggested Improvements</h2>
+            <div className="section-header">
+              <h2 className="section-title">
+                <FiAlertCircle className="section-icon" />
+                Suggested Improvements
+              </h2>
+            </div>
             <div className="improvements-list">
               {analysis.improvements.map((improvement, index) => (
                 <div key={index} className="improvement-item">
@@ -222,7 +263,10 @@ const ResumeAnalysis = () => {
                     <span className="improvement-category">{improvement.category}</span>
                     <span 
                       className="improvement-priority"
-                      style={{ color: getPriorityColor(improvement.priority) }}
+                      style={{ 
+                        backgroundColor: `${getPriorityColor(improvement.priority)}20`,
+                        color: getPriorityColor(improvement.priority)
+                      }}
                     >
                       {improvement.priority} priority
                     </span>
@@ -237,7 +281,9 @@ const ResumeAnalysis = () => {
         {/* Keywords */}
         {analysis.keywordMatches.length > 0 && (
           <div className="analysis-section">
-            <h2>Top Keywords</h2>
+            <div className="section-header">
+              <h2 className="section-title">Top Keywords Found</h2>
+            </div>
             <div className="keywords-list">
               {analysis.keywordMatches.map((keyword, index) => (
                 <span key={index} className="keyword-badge">
