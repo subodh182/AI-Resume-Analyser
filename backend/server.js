@@ -16,9 +16,13 @@ const app = express();
 
 // Security Middleware
 app.use(cors({
-  origin: '*',
-  methods: ['GET','POST','PUT','DELETE'],
-  allowedHeaders: ['Content-Type','Authorization']
+  origin: [
+    'http://localhost:3000',
+    'https://ai-resume-analyser-khaki.vercel.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 
