@@ -53,7 +53,7 @@ const ResumeAnalysis = () => {
     labels: ['ATS Score', 'Remaining'],
     datasets: [{
       data: [analysis.atsScore, 100 - analysis.atsScore],
-      backgroundColor: ['#4ECDC4', 'rgba(255, 255, 255, 0.1)'],
+      backgroundColor: ['#4FACFE', 'rgba(255, 255, 255, 0.1)'],
       borderWidth: 0
     }]
   };
@@ -62,7 +62,7 @@ const ResumeAnalysis = () => {
     labels: ['Overall Score', 'Remaining'],
     datasets: [{
       data: [analysis.overallScore, 100 - analysis.overallScore],
-      backgroundColor: ['#FF6B6B', 'rgba(255, 255, 255, 0.1)'],
+      backgroundColor: ['#667EEA', 'rgba(255, 255, 255, 0.1)'],
       borderWidth: 0
     }]
   };
@@ -73,7 +73,7 @@ const ResumeAnalysis = () => {
     datasets: [{
       label: 'Skills',
       data: analysis.skillsFound.slice(0, 8).map(() => 1),
-      backgroundColor: '#95E1D3',
+      backgroundColor: '#4FACFE',
     }]
   };
 
@@ -94,22 +94,22 @@ const ResumeAnalysis = () => {
     scales: {
       y: { display: false },
       x: { 
-        ticks: { color: '#C7C7C7', font: { size: 11 } },
+        ticks: { color: '#9B9BBF', font: { size: 11 } },
         grid: { display: false }
       }
     }
   };
 
   const getScoreColor = (score) => {
-    if (score >= 80) return '#95E1D3';
-    if (score >= 60) return '#FFE66D';
-    return '#FF6B6B';
+    if (score >= 80) return '#4FACFE';
+    if (score >= 60) return '#FEC163';
+    return '#FA709A';
   };
 
   const getPriorityColor = (priority) => {
-    if (priority === 'high') return '#FF6B6B';
-    if (priority === 'medium') return '#FFE66D';
-    return '#95E1D3';
+    if (priority === 'high') return '#FA709A';
+    if (priority === 'medium') return '#FEC163';
+    return '#4FACFE';
   };
 
   return (
@@ -247,39 +247,185 @@ const ResumeAnalysis = () => {
           </div>
         </div>
 
-        {/* Improvements */}
-        {analysis.improvements.length > 0 && (
+        {/* Detailed Improvements Section */}
+        {analysis.improvements && analysis.improvements.length > 0 && (
           <div className="analysis-section">
             <div className="section-header">
               <h2 className="section-title">
                 <FiAlertCircle className="section-icon" />
-                Suggested Improvements
+                Detailed Improvement Roadmap ({analysis.improvements.length})
               </h2>
+              <p className="section-subtitle">
+                Follow these actionable steps to significantly improve your resume
+              </p>
             </div>
-            <div className="improvements-list">
+            
+            <div className="improvements-roadmap">
               {analysis.improvements.map((improvement, index) => (
-                <div key={index} className="improvement-item">
-                  <div className="improvement-header">
-                    <span className="improvement-category">{improvement.category}</span>
-                    <span 
-                      className="improvement-priority"
-                      style={{ 
-                        backgroundColor: `${getPriorityColor(improvement.priority)}20`,
-                        color: getPriorityColor(improvement.priority)
-                      }}
-                    >
-                      {improvement.priority} priority
-                    </span>
+                <div key={index} className={`improvement-card priority-${improvement.priority}`}>
+                  {/* Header */}
+                  <div className="improvement-card-header">
+                    <div className="improvement-title-section">
+                      <span className="improvement-number">{index + 1}</span>
+                      <h3 className="improvement-title">{improvement.category}</h3>
+                    </div>
+                    <div className="priority-badges">
+                      <span 
+                        className={`priority-badge ${improvement.priority}`}
+                        style={{ 
+                          backgroundColor: `${getPriorityColor(improvement.priority)}20`,
+                          color: getPriorityColor(improvement.priority)
+                        }}
+                      >
+                        {improvement.priority} priority
+                      </span>
+                      {improvement.impact && (
+                        <span className="impact-badge">
+                          {improvement.impact}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <p className="improvement-suggestion">{improvement.suggestion}</p>
+
+                  {/* Issue */}
+                  <div className="improvement-issue">
+                    <strong>❌ Issue:</strong> {improvement.issue}
+                  </div>
+
+                  {/* Suggestion */}
+                  <div className="improvement-suggestion-box">
+                    <strong>💡 Suggestion:</strong> {improvement.suggestion}
+                  </div>
+
+                  {/* What to Add */}
+                  {improvement.whatToAdd && (
+                    <div className="improvement-detail">
+                      <strong>📝 What to Add:</strong>
+                      <ul className="checklist">
+                        {improvement.whatToAdd.map((item, i) => (
+                          <li key={i}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Example */}
+                  {improvement.example && (
+                    <div className="improvement-example">
+                      <strong>✅ Example:</strong>
+                      <div className="example-box">
+                        <pre>{improvement.example}</pre>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Before/After */}
+                  {improvement.beforeAfter && (
+                    <div className="before-after">
+                      <div className="before">
+                        <strong>❌ Before:</strong>
+                        <p>{improvement.beforeAfter.before}</p>
+                      </div>
+                      <div className="arrow">→</div>
+                      <div className="after">
+                        <strong>✅ After:</strong>
+                        <p>{improvement.beforeAfter.after}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* How To */}
+                  {improvement.howTo && (
+                    <div className="improvement-detail">
+                      <strong>🎯 How to Implement:</strong>
+                      <ul className="how-to-list">
+                        {improvement.howTo.map((step, i) => (
+                          <li key={i}>{step}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Resources */}
+                  {improvement.resources && improvement.resources.length > 0 && (
+                    <div className="improvement-resources">
+                      <strong>📚 Helpful Resources:</strong>
+                      <div className="resource-links">
+                        {improvement.resources.map((resource, i) => (
+                          <a key={i} href={resource.url || '#'} className="resource-link">
+                            <span className="resource-type">{resource.type}</span>
+                            <span className="resource-title">{resource.title}</span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
+            </div>
+
+            {/* Quick Action Summary */}
+            <div className="quick-action-summary">
+              <h3>🎯 Quick Action Summary</h3>
+              <div className="action-cards">
+                <div className="action-card high">
+                  <div className="action-count">
+                    {analysis.improvements.filter(i => i.priority === 'high').length}
+                  </div>
+                  <div className="action-label">High Priority Items</div>
+                  <p>Fix these first for maximum impact</p>
+                </div>
+                <div className="action-card medium">
+                  <div className="action-count">
+                    {analysis.improvements.filter(i => i.priority === 'medium').length}
+                  </div>
+                  <div className="action-label">Medium Priority Items</div>
+                  <p>Important but not urgent</p>
+                </div>
+                <div className="action-card low">
+                  <div className="action-count">
+                    {analysis.improvements.filter(i => i.priority === 'low').length}
+                  </div>
+                  <div className="action-label">Low Priority Items</div>
+                  <p>Nice to have improvements</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Professional Help CTA */}
+            <div className="professional-help-cta">
+              <div className="cta-content">
+                <h4>🚀 Need Expert Help?</h4>
+                <p>Connect with professional resume writers who can transform your resume to get more interviews</p>
+                <div className="cta-buttons">
+                  <button className="btn btn-primary">
+                    Find Resume Experts
+                  </button>
+                  <button className="btn btn-secondary">
+                    Book Free Consultation
+                  </button>
+                </div>
+              </div>
+              <div className="cta-stats">
+                <div className="stat">
+                  <div className="stat-number">95%</div>
+                  <div className="stat-label">Success Rate</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-number">2.5x</div>
+                  <div className="stat-label">More Interviews</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-number">$49</div>
+                  <div className="stat-label">Starting Price</div>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
         {/* Keywords */}
-        {analysis.keywordMatches.length > 0 && (
+        {analysis.keywordMatches && analysis.keywordMatches.length > 0 && (
           <div className="analysis-section">
             <div className="section-header">
               <h2 className="section-title">Top Keywords Found</h2>
