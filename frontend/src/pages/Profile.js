@@ -474,3 +474,392 @@ const Profile = () => {
 };
 
 export default Profile;
+{/* Experience Section */}
+        <div className="profile-section">
+          <div className="section-header">
+            <h3 className="section-title">💼 Work Experience</h3>
+            {editing && (
+              <button onClick={handleExperienceAdd} className="btn-icon">
+                <FiPlus /> Add Experience
+              </button>
+            )}
+          </div>
+          <div className="experience-list">
+            {formData.experience?.length > 0 ? (
+              formData.experience.map((exp, index) => (
+                <div key={index} className="experience-item">
+                  {editing ? (
+                    <div className="experience-form">
+                      <div className="form-row">
+                        <input
+                          type="text"
+                          value={exp.position}
+                          onChange={(e) => handleExperienceChange(index, 'position', e.target.value)}
+                          placeholder="Position"
+                          className="form-input"
+                        />
+                        <input
+                          type="text"
+                          value={exp.company}
+                          onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
+                          placeholder="Company"
+                          className="form-input"
+                        />
+                      </div>
+                      <div className="form-row">
+                        <input
+                          type="text"
+                          value={exp.location}
+                          onChange={(e) => handleExperienceChange(index, 'location', e.target.value)}
+                          placeholder="Location"
+                          className="form-input"
+                        />
+                        <select
+                          value={exp.employmentType}
+                          onChange={(e) => handleExperienceChange(index, 'employmentType', e.target.value)}
+                          className="form-select"
+                        >
+                          <option value="Full-time">Full-time</option>
+                          <option value="Part-time">Part-time</option>
+                          <option value="Contract">Contract</option>
+                          <option value="Internship">Internship</option>
+                          <option value="Freelance">Freelance</option>
+                        </select>
+                      </div>
+                      <div className="form-row">
+                        <input
+                          type="month"
+                          value={exp.startDate ? new Date(exp.startDate).toISOString().slice(0, 7) : ''}
+                          onChange={(e) => handleExperienceChange(index, 'startDate', e.target.value)}
+                          placeholder="Start Date"
+                          className="form-input"
+                        />
+                        {!exp.current && (
+                          <input
+                            type="month"
+                            value={exp.endDate ? new Date(exp.endDate).toISOString().slice(0, 7) : ''}
+                            onChange={(e) => handleExperienceChange(index, 'endDate', e.target.value)}
+                            placeholder="End Date"
+                            className="form-input"
+                          />
+                        )}
+                        <label className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={exp.current}
+                            onChange={(e) => handleExperienceChange(index, 'current', e.target.checked)}
+                          />
+                          Currently Working
+                        </label>
+                      </div>
+                      <textarea
+                        value={exp.description}
+                        onChange={(e) => handleExperienceChange(index, 'description', e.target.value)}
+                        placeholder="Job description and achievements..."
+                        rows="4"
+                        className="form-textarea"
+                      />
+                      <button 
+                        onClick={() => handleExperienceRemove(index)}
+                        className="btn-remove-large"
+                      >
+                        <FiTrash2 /> Remove Experience
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="experience-display">
+                      <div className="exp-header">
+                        <div>
+                          <h4 className="exp-position">{exp.position}</h4>
+                          <p className="exp-company">{exp.company}</p>
+                        </div>
+                        <span className="exp-type">{exp.employmentType}</span>
+                      </div>
+                      <p className="exp-location">
+                        <FiMapPin /> {exp.location}
+                      </p>
+                      <p className="exp-duration">
+                        {exp.startDate && new Date(exp.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                        {' - '}
+                        {exp.current ? 'Present' : exp.endDate && new Date(exp.endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                      </p>
+                      {exp.description && (
+                        <p className="exp-description">{exp.description}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="empty-text">No experience added yet</p>
+            )}
+          </div>
+        </div>
+
+        {/* Education Section */}
+        <div className="profile-section">
+          <div className="section-header">
+            <h3 className="section-title">🎓 Education</h3>
+            {editing && (
+              <button onClick={handleEducationAdd} className="btn-icon">
+                <FiPlus /> Add Education
+              </button>
+            )}
+          </div>
+          <div className="education-list">
+            {formData.education?.length > 0 ? (
+              formData.education.map((edu, index) => (
+                <div key={index} className="education-item">
+                  {editing ? (
+                    <div className="education-form">
+                      <div className="form-row">
+                        <input
+                          type="text"
+                          value={edu.degree}
+                          onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
+                          placeholder="Degree (e.g., B.Tech in Computer Science)"
+                          className="form-input"
+                        />
+                        <input
+                          type="text"
+                          value={edu.university}
+                          onChange={(e) => handleEducationChange(index, 'university', e.target.value)}
+                          placeholder="University/College"
+                          className="form-input"
+                        />
+                      </div>
+                      <div className="form-row">
+                        <input
+                          type="text"
+                          value={edu.fieldOfStudy}
+                          onChange={(e) => handleEducationChange(index, 'fieldOfStudy', e.target.value)}
+                          placeholder="Field of Study"
+                          className="form-input"
+                        />
+                        <input
+                          type="text"
+                          value={edu.grade}
+                          onChange={(e) => handleEducationChange(index, 'grade', e.target.value)}
+                          placeholder="Grade/CGPA"
+                          className="form-input"
+                        />
+                      </div>
+                      <div className="form-row">
+                        <input
+                          type="number"
+                          value={edu.startYear}
+                          onChange={(e) => handleEducationChange(index, 'startYear', e.target.value)}
+                          placeholder="Start Year"
+                          min="1950"
+                          max="2030"
+                          className="form-input"
+                        />
+                        <input
+                          type="number"
+                          value={edu.endYear}
+                          onChange={(e) => handleEducationChange(index, 'endYear', e.target.value)}
+                          placeholder="End Year"
+                          min="1950"
+                          max="2030"
+                          className="form-input"
+                        />
+                      </div>
+                      <button 
+                        onClick={() => handleEducationRemove(index)}
+                        className="btn-remove-large"
+                      >
+                        <FiTrash2 /> Remove Education
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="education-display">
+                      <h4 className="edu-degree">{edu.degree}</h4>
+                      <p className="edu-university">{edu.university}</p>
+                      {edu.fieldOfStudy && (
+                        <p className="edu-field">{edu.fieldOfStudy}</p>
+                      )}
+                      <div className="edu-meta">
+                        <span className="edu-year">
+                          {edu.startYear} - {edu.endYear}
+                        </span>
+                        {edu.grade && (
+                          <span className="edu-grade">Grade: {edu.grade}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="empty-text">No education added yet</p>
+            )}
+          </div>
+        </div>
+
+        {/* Social Links */}
+        <div className="profile-section">
+          <h3 className="section-title">🔗 Social Links</h3>
+          <div className="social-links-grid">
+            <div className="form-group">
+              <label>
+                <FiLinkedin /> LinkedIn
+              </label>
+              {editing ? (
+                <input
+                  type="url"
+                  name="socialLinks.linkedin"
+                  value={formData.socialLinks?.linkedin || ''}
+                  onChange={handleChange}
+                  placeholder="https://linkedin.com/in/yourname"
+                />
+              ) : (
+                <p className="form-value">
+                  {user?.socialLinks?.linkedin ? (
+                    <a href={user.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
+                      {user.socialLinks.linkedin}
+                    </a>
+                  ) : (
+                    'Not provided'
+                  )}
+                </p>
+              )}
+            </div>
+            <div className="form-group">
+              <label>
+                <FiGithub /> GitHub
+              </label>
+              {editing ? (
+                <input
+                  type="url"
+                  name="socialLinks.github"
+                  value={formData.socialLinks?.github || ''}
+                  onChange={handleChange}
+                  placeholder="https://github.com/yourname"
+                />
+              ) : (
+                <p className="form-value">
+                  {user?.socialLinks?.github ? (
+                    <a href={user.socialLinks.github} target="_blank" rel="noopener noreferrer">
+                      {user.socialLinks.github}
+                    </a>
+                  ) : (
+                    'Not provided'
+                  )}
+                </p>
+              )}
+            </div>
+            <div className="form-group">
+              <label>
+                <FiGlobe /> Portfolio
+              </label>
+              {editing ? (
+                <input
+                  type="url"
+                  name="socialLinks.portfolio"
+                  value={formData.socialLinks?.portfolio || ''}
+                  onChange={handleChange}
+                  placeholder="https://yourwebsite.com"
+                />
+              ) : (
+                <p className="form-value">
+                  {user?.socialLinks?.portfolio ? (
+                    <a href={user.socialLinks.portfolio} target="_blank" rel="noopener noreferrer">
+                      {user.socialLinks.portfolio}
+                    </a>
+                  ) : (
+                    'Not provided'
+                  )}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Job Preferences */}
+        <div className="profile-section">
+          <h3 className="section-title">⚙️ Job Preferences</h3>
+          <div className="preferences-grid">
+            <div className="form-group">
+              <label className="checkbox-label large">
+                <input
+                  type="checkbox"
+                  name="jobPreferences.openToWork"
+                  checked={formData.jobPreferences?.openToWork || false}
+                  onChange={handleChange}
+                  disabled={!editing}
+                />
+                <span className="checkbox-text">
+                  <strong>Open to Work</strong>
+                  <small>Let recruiters know you're looking for opportunities</small>
+                </span>
+              </label>
+            </div>
+            
+            {editing && (
+              <>
+                <div className="form-group">
+                  <label>Preferred Job Types</label>
+                  <div className="checkbox-group">
+                    {['Full-time', 'Part-time', 'Contract', 'Internship', 'Remote'].map(type => (
+                      <label key={type} className="checkbox-label">
+                        <input
+                          type="checkbox"
+                          checked={formData.jobPreferences?.jobTypes?.includes(type)}
+                          onChange={(e) => {
+                            const currentTypes = formData.jobPreferences?.jobTypes || [];
+                            const newTypes = e.target.checked
+                              ? [...currentTypes, type]
+                              : currentTypes.filter(t => t !== type);
+                            setFormData(prev => ({
+                              ...prev,
+                              jobPreferences: {
+                                ...prev.jobPreferences,
+                                jobTypes: newTypes
+                              }
+                            }));
+                          }}
+                        />
+                        {type}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="jobPreferences.willingToRelocate"
+                      checked={formData.jobPreferences?.willingToRelocate || false}
+                      onChange={handleChange}
+                    />
+                    Willing to Relocate
+                  </label>
+                </div>
+              </>
+            )}
+
+            {!editing && user?.jobPreferences?.jobTypes?.length > 0 && (
+              <div className="form-group">
+                <label>Preferred Job Types</label>
+                <div className="tags-display">
+                  {user.jobPreferences.jobTypes.map((type, index) => (
+                    <span key={index} className="tag">{type}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!editing && user?.jobPreferences?.willingToRelocate && (
+              <div className="form-group">
+                <p className="form-value">✅ Willing to Relocate</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Profile;
