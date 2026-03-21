@@ -84,3 +84,24 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+// ... existing code ...
+
+// Dashboard APIs
+export const getDashboardStats = () => api.get('/users/dashboard/stats');
+export const getActivities = (limit = 10) => api.get(`/users/activities?limit=${limit}`);
+
+// Profile APIs
+export const getProfile = () => api.get('/users/profile');
+export const updateProfile = (data) => api.put('/users/profile', data);
+export const uploadProfilePhoto = (formData) => api.post('/users/profile/photo', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' }
+});
+
+// Application APIs
+export const getApplications = () => api.get('/applications');
+export const createApplication = (data) => api.post('/applications', data);
+export const updateApplication = (id, data) => api.put(`/applications/${id}`, data);
+export const addInterview = (id, data) => api.post(`/applications/${id}/interview`, data);
+
+export default api;
