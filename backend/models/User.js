@@ -12,7 +12,11 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please provide an email'],
     unique: true,
     lowercase: true,
-    trim: true
+    trim: true,
+    match: [
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      'Please provide a valid email'
+    ]
   },
   password: {
     type: String,
@@ -68,6 +72,18 @@ const userSchema = new mongoose.Schema({
     portfolio: String
   },
   
+  // Email verification (optional - for future)
+  isVerified: {
+    type: Boolean,
+    default: true // Set to true for now, false when email verification is implemented
+  },
+  verificationToken: String,
+  verificationTokenExpire: Date,
+  
+  // Password reset (optional - for future)
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
+  
   // Timestamps
   lastActive: {
     type: Date,
@@ -79,6 +95,7 @@ const userSchema = new mongoose.Schema({
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
+  // Only hash if password is modified
   if (!this.isModified('password')) {
     return next();
   }
