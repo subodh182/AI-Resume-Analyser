@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const userRoutes = require('./routes/userRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -124,6 +125,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // =============================================
 // 404 Handler
