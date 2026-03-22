@@ -3,7 +3,7 @@ const Resume = require('../models/Resume');
 // @desc    Match resume with job description
 // @route   POST /api/job-match/analyze
 // @access  Private
-exports.analyzeJobMatch = async (req, res) => {
+const analyzeJobMatch = async (req, res) => {
   try {
     const { resumeId, jobDescription } = req.body;
 
@@ -49,34 +49,42 @@ function extractSkills(jobDescription) {
   const skillsDatabase = [
     // Frontend
     'react', 'angular', 'vue', 'javascript', 'typescript', 'html', 'css', 
-    'redux', 'nextjs', 'webpack', 'sass', 'tailwind',
+    'redux', 'nextjs', 'next.js', 'webpack', 'sass', 'tailwind', 'bootstrap',
     
     // Backend
-    'nodejs', 'node.js', 'express', 'python', 'django', 'flask', 'java', 
-    'spring', 'php', 'laravel', 'ruby', 'rails', 'go', 'golang',
+    'nodejs', 'node.js', 'node', 'express', 'python', 'django', 'flask', 
+    'java', 'spring', 'spring boot', 'php', 'laravel', 'ruby', 'rails', 
+    'go', 'golang', '.net', 'c#', 'asp.net',
     
     // Databases
-    'mongodb', 'mysql', 'postgresql', 'redis', 'elasticsearch', 'sql',
-    'nosql', 'dynamodb', 'oracle', 'sqlite',
+    'mongodb', 'mysql', 'postgresql', 'postgres', 'redis', 'elasticsearch', 
+    'sql', 'nosql', 'dynamodb', 'oracle', 'sqlite', 'cassandra',
     
-    // DevOps
-    'docker', 'kubernetes', 'jenkins', 'aws', 'azure', 'gcp', 'ci/cd',
-    'terraform', 'ansible', 'linux', 'nginx', 'apache',
+    // DevOps & Cloud
+    'docker', 'kubernetes', 'k8s', 'jenkins', 'aws', 'azure', 'gcp', 
+    'google cloud', 'ci/cd', 'terraform', 'ansible', 'linux', 'nginx', 
+    'apache', 'github actions', 'gitlab ci',
     
-    // Tools
-    'git', 'jira', 'agile', 'scrum', 'rest api', 'graphql', 'microservices',
-    'socket.io', 'websocket', 'oauth', 'jwt',
+    // Tools & Others
+    'git', 'github', 'gitlab', 'jira', 'agile', 'scrum', 'rest api', 
+    'restful', 'graphql', 'microservices', 'socket.io', 'websocket', 
+    'oauth', 'jwt', 'api', 'postman',
     
-    // Others
-    'machine learning', 'data science', 'ai', 'tensorflow', 'pytorch',
-    'react native', 'flutter', 'swift', 'kotlin', 'android', 'ios'
+    // Mobile
+    'react native', 'flutter', 'swift', 'kotlin', 'android', 'ios',
+    
+    // Data & AI
+    'machine learning', 'ml', 'data science', 'ai', 'tensorflow', 
+    'pytorch', 'pandas', 'numpy', 'data analysis', 'deep learning'
   ];
 
   const jdLower = jobDescription.toLowerCase();
   const foundSkills = [];
 
   skillsDatabase.forEach(skill => {
-    const regex = new RegExp(`\\b${skill}\\b`, 'i');
+    // Escape special regex characters
+    const escapedSkill = skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escapedSkill}\\b`, 'i');
     if (regex.test(jdLower)) {
       foundSkills.push(skill);
     }
@@ -88,7 +96,10 @@ function extractSkills(jobDescription) {
 // Calculate match percentage and analysis
 function calculateMatch(resumeSkills, jobSkills, jobDescription, resume) {
   // Normalize skills
-  const normalizedResumeSkills = resumeSkills.map(s => s.toLowerCase());
+  const normalizedResumeSkills = resumeSkills.map(s => 
+    typeof s === 'string' ? s.toLowerCase() : s
+  );
+  
   const normalizedJobSkills = jobSkills.map(s => s.toLowerCase());
 
   // Find matching and missing skills
@@ -135,6 +146,20 @@ function generateRecommendations(matchPercentage, missingSkills, jobDescription,
       message: 'Your resume matches less than 50% of the job requirements. Consider applying to better-matched positions or updating your resume.',
       action: 'Review missing skills and add relevant experience'
     });
+  } else if (matchPercentage >= 50 && matchPercentage < 70) {
+    recommendations.push({
+      priority: 'medium',
+      title: 'Moderate Match',
+      message: 'You match most requirements. Adding missing skills could improve your chances.',
+      action: 'Focus on adding the most important missing skills'
+    });
+  } else if (matchPercentage >= 70) {
+    recommendations.push({
+      priority: 'low',
+      title: 'Good Match!',
+      message: 'Your resume is a strong match for this position. Consider applying!',
+      action: 'Tailor your resume to highlight matching skills'
+    });
   }
 
   if (missingSkills.length > 0) {
@@ -180,4 +205,7 @@ function generateRecommendations(matchPercentage, missingSkills, jobDescription,
   return recommendations;
 }
 
-module.exports = { analyzeJobMatch };
+// ✅ CRITICAL FIX: Proper export
+module.exports = {
+  analyzeJobMatch
+};
