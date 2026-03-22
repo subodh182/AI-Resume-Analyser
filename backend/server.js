@@ -13,6 +13,7 @@ const userRoutes = require('./routes/userRoutes');
 // const applicationRoutes = require('./routes/applicationRoutes');
 const errorHandler = require('./middleware/errorHandler');
 const jobMatchRoutes = require('./routes/jobMatchRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 const app = express();
 
@@ -127,6 +128,7 @@ app.use('/api/resume', resumeRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/job-match', jobMatchRoutes);
+app.use('/api/ai', aiRoutes);
 // app.use('/api/applications', applicationRoutes);
 
 // =============================================
