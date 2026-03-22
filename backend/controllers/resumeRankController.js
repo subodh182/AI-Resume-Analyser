@@ -1,12 +1,8 @@
 const Resume = require('../models/Resume');
 
-// @desc    Rank multiple resumes
-// @route   POST /api/resume/rank
-// @access  Private
-exports.rankResumes = async (req, res) => {
+const rankResumes = async (req, res) => {
   try {
     const { resumeIds } = req.body;
-
     if (!resumeIds || resumeIds.length < 2) {
       return res.status(400).json({
         success: false,
@@ -14,7 +10,6 @@ exports.rankResumes = async (req, res) => {
       });
     }
 
-    // Fetch all resumes
     const resumes = await Resume.find({
       _id: { $in: resumeIds },
       user: req.user.id
@@ -27,13 +22,10 @@ exports.rankResumes = async (req, res) => {
       });
     }
 
-    // Calculate ranking
     const rankings = resumes.map(resume => {
       const atsScore = resume.analysis?.atsScore || 0;
       const overallScore = resume.analysis?.overallScore || 0;
       const skillsCount = resume.analysis?.skills?.length || 0;
-      
-      // Weighted score
       const finalScore = (atsScore * 0.4) + (overallScore * 0.4) + (skillsCount * 0.2);
 
       return {
@@ -47,10 +39,7 @@ exports.rankResumes = async (req, res) => {
       };
     });
 
-    // Sort by final score
     rankings.sort((a, b) => b.finalScore - a.finalScore);
-
-    // Add rank
     rankings.forEach((item, index) => {
       item.rank = index + 1;
     });
@@ -69,13 +58,9 @@ exports.rankResumes = async (req, res) => {
   }
 };
 
-// @desc    Compare two resumes
-// @route   POST /api/resume/compare
-// @access  Private
-exports.compareResumes = async (req, res) => {
+const compareResumes = async (req, res) => {
   try {
     const { resumeIds } = req.body;
-
     if (!resumeIds || resumeIds.length !== 2) {
       return res.status(400).json({
         success: false,
@@ -115,10 +100,8 @@ exports.compareResumes = async (req, res) => {
       winner: null
     };
 
-    // Determine winner
     const score1 = (comparison.resume1.atsScore + comparison.resume1.overallScore) / 2;
     const score2 = (comparison.resume2.atsScore + comparison.resume2.overallScore) / 2;
-    
     comparison.winner = score1 > score2 ? 'resume1' : score2 > score1 ? 'resume2' : 'tie';
 
     res.json({
