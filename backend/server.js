@@ -12,6 +12,7 @@ const jobRoutes = require('./routes/jobRoutes');
 const userRoutes = require('./routes/userRoutes');
 // const applicationRoutes = require('./routes/applicationRoutes');
 const errorHandler = require('./middleware/errorHandler');
+const jobMatchRoutes = require('./routes/jobMatchRoutes');
 
 const app = express();
 
@@ -125,6 +126,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/job-match', jobMatchRoutes);
 // app.use('/api/applications', applicationRoutes);
 
 // =============================================
