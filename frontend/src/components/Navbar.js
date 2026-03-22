@@ -39,6 +39,10 @@ const Navbar = () => {
               <Link to="/profile" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
                 <FiUser /> Profile
               </Link>
+            // Add link in navigation (around line 40)
+              <Link to="/job-match" className="nav-link">
+                Job Match
+              </Link>
               <button className="nav-link logout-btn" onClick={handleLogout}>
                 <FiLogOut /> Logout
               </button>
