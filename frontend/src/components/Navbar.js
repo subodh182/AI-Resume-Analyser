@@ -22,7 +22,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <Link to="/" className="nav-logo">
-          <span className="logo-icon">📄</span>
+          <span className="logo-icon">AI</span>
           <span className="logo-text">ResumePro</span>
         </Link>
         <div className="mobile-menu-icon" onClick={toggleMenu}>
