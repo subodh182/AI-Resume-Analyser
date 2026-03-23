@@ -79,10 +79,8 @@ const Profile = () => {
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const formData = new FormData();
     formData.append('photo', file);
-
     try {
       const response = await uploadProfilePhoto(formData);
       setUser({ ...user, profilePhoto: response.data.photoUrl });
@@ -94,7 +92,6 @@ const Profile = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
       setFormData(prev => ({
@@ -213,6 +210,7 @@ const Profile = () => {
   return (
     <div className="profile-page">
       <div className="profile-container">
+
         {/* Header */}
         <div className="profile-header">
           <div className="header-content">
@@ -298,15 +296,11 @@ const Profile = () => {
               )}
             </div>
             <div className="form-group">
-              <label>
-                <FiMail /> Email
-              </label>
+              <label><FiMail /> Email</label>
               <p className="form-value">{user?.email}</p>
             </div>
             <div className="form-group">
-              <label>
-                <FiPhone /> Phone
-              </label>
+              <label><FiPhone /> Phone</label>
               {editing ? (
                 <input
                   type="tel"
@@ -320,32 +314,12 @@ const Profile = () => {
               )}
             </div>
             <div className="form-group">
-              <label>
-                <FiMapPin /> Location
-              </label>
+              <label><FiMapPin /> Location</label>
               {editing ? (
                 <div className="location-inputs">
-                  <input
-                    type="text"
-                    name="location.city"
-                    value={formData.location?.city || ''}
-                    onChange={handleChange}
-                    placeholder="City"
-                  />
-                  <input
-                    type="text"
-                    name="location.state"
-                    value={formData.location?.state || ''}
-                    onChange={handleChange}
-                    placeholder="State"
-                  />
-                  <input
-                    type="text"
-                    name="location.country"
-                    value={formData.location?.country || ''}
-                    onChange={handleChange}
-                    placeholder="Country"
-                  />
+                  <input type="text" name="location.city" value={formData.location?.city || ''} onChange={handleChange} placeholder="City" />
+                  <input type="text" name="location.state" value={formData.location?.state || ''} onChange={handleChange} placeholder="State" />
+                  <input type="text" name="location.country" value={formData.location?.country || ''} onChange={handleChange} placeholder="Country" />
                 </div>
               ) : (
                 <p className="form-value">
@@ -367,13 +341,7 @@ const Profile = () => {
             <div className="form-group">
               <label>Current Position</label>
               {editing ? (
-                <input
-                  type="text"
-                  name="currentPosition"
-                  value={formData.currentPosition}
-                  onChange={handleChange}
-                  placeholder="e.g., Senior Software Engineer"
-                />
+                <input type="text" name="currentPosition" value={formData.currentPosition} onChange={handleChange} placeholder="e.g., Senior Software Engineer" />
               ) : (
                 <p className="form-value">{user?.currentPosition || 'Not provided'}</p>
               )}
@@ -381,13 +349,7 @@ const Profile = () => {
             <div className="form-group">
               <label>Current Company</label>
               {editing ? (
-                <input
-                  type="text"
-                  name="currentCompany"
-                  value={formData.currentCompany}
-                  onChange={handleChange}
-                  placeholder="e.g., Google"
-                />
+                <input type="text" name="currentCompany" value={formData.currentCompany} onChange={handleChange} placeholder="e.g., Google" />
               ) : (
                 <p className="form-value">{user?.currentCompany || 'Not provided'}</p>
               )}
@@ -411,18 +373,8 @@ const Profile = () => {
                 <div key={index} className="skill-item">
                   {editing ? (
                     <>
-                      <input
-                        type="text"
-                        value={skill.name}
-                        onChange={(e) => handleSkillChange(index, 'name', e.target.value)}
-                        placeholder="Skill name"
-                        className="skill-input"
-                      />
-                      <select
-                        value={skill.category}
-                        onChange={(e) => handleSkillChange(index, 'category', e.target.value)}
-                        className="skill-select"
-                      >
+                      <input type="text" value={skill.name} onChange={(e) => handleSkillChange(index, 'name', e.target.value)} placeholder="Skill name" className="skill-input" />
+                      <select value={skill.category} onChange={(e) => handleSkillChange(index, 'category', e.target.value)} className="skill-select">
                         <option value="programming">Programming</option>
                         <option value="frameworks">Frameworks</option>
                         <option value="databases">Databases</option>
@@ -430,31 +382,16 @@ const Profile = () => {
                         <option value="tools">Tools</option>
                         <option value="soft_skills">Soft Skills</option>
                       </select>
-                      <input
-                        type="range"
-                        min="1"
-                        max="10"
-                        value={skill.proficiency}
-                        onChange={(e) => handleSkillChange(index, 'proficiency', parseInt(e.target.value))}
-                        className="skill-range"
-                      />
+                      <input type="range" min="1" max="10" value={skill.proficiency} onChange={(e) => handleSkillChange(index, 'proficiency', parseInt(e.target.value))} className="skill-range" />
                       <span className="skill-level">{skill.proficiency}/10</span>
-                      <button 
-                        onClick={() => handleSkillRemove(index)}
-                        className="btn-remove"
-                      >
-                        <FiTrash2 />
-                      </button>
+                      <button onClick={() => handleSkillRemove(index)} className="btn-remove"><FiTrash2 /></button>
                     </>
                   ) : (
                     <>
                       <span className="skill-name">{skill.name}</span>
                       <span className="skill-category">{skill.category}</span>
                       <div className="skill-bar">
-                        <div 
-                          className="skill-bar-fill"
-                          style={{ width: `${skill.proficiency * 10}%` }}
-                        ></div>
+                        <div className="skill-bar-fill" style={{ width: `${skill.proficiency * 10}%` }}></div>
                       </div>
                       <span className="skill-level">{skill.proficiency}/10</span>
                     </>
@@ -467,14 +404,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Continue in next message... */}
-      </div>
-    </div>
-  );
-};
-
-export default Profile;
-{/* Experience Section */}
+        {/* Experience Section */}
         <div className="profile-section">
           <div className="section-header">
             <h3 className="section-title">💼 Work Experience</h3>
@@ -491,34 +421,12 @@ export default Profile;
                   {editing ? (
                     <div className="experience-form">
                       <div className="form-row">
-                        <input
-                          type="text"
-                          value={exp.position}
-                          onChange={(e) => handleExperienceChange(index, 'position', e.target.value)}
-                          placeholder="Position"
-                          className="form-input"
-                        />
-                        <input
-                          type="text"
-                          value={exp.company}
-                          onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
-                          placeholder="Company"
-                          className="form-input"
-                        />
+                        <input type="text" value={exp.position} onChange={(e) => handleExperienceChange(index, 'position', e.target.value)} placeholder="Position" className="form-input" />
+                        <input type="text" value={exp.company} onChange={(e) => handleExperienceChange(index, 'company', e.target.value)} placeholder="Company" className="form-input" />
                       </div>
                       <div className="form-row">
-                        <input
-                          type="text"
-                          value={exp.location}
-                          onChange={(e) => handleExperienceChange(index, 'location', e.target.value)}
-                          placeholder="Location"
-                          className="form-input"
-                        />
-                        <select
-                          value={exp.employmentType}
-                          onChange={(e) => handleExperienceChange(index, 'employmentType', e.target.value)}
-                          className="form-select"
-                        >
+                        <input type="text" value={exp.location} onChange={(e) => handleExperienceChange(index, 'location', e.target.value)} placeholder="Location" className="form-input" />
+                        <select value={exp.employmentType} onChange={(e) => handleExperienceChange(index, 'employmentType', e.target.value)} className="form-select">
                           <option value="Full-time">Full-time</option>
                           <option value="Part-time">Part-time</option>
                           <option value="Contract">Contract</option>
@@ -527,42 +435,17 @@ export default Profile;
                         </select>
                       </div>
                       <div className="form-row">
-                        <input
-                          type="month"
-                          value={exp.startDate ? new Date(exp.startDate).toISOString().slice(0, 7) : ''}
-                          onChange={(e) => handleExperienceChange(index, 'startDate', e.target.value)}
-                          placeholder="Start Date"
-                          className="form-input"
-                        />
+                        <input type="month" value={exp.startDate ? new Date(exp.startDate).toISOString().slice(0, 7) : ''} onChange={(e) => handleExperienceChange(index, 'startDate', e.target.value)} className="form-input" />
                         {!exp.current && (
-                          <input
-                            type="month"
-                            value={exp.endDate ? new Date(exp.endDate).toISOString().slice(0, 7) : ''}
-                            onChange={(e) => handleExperienceChange(index, 'endDate', e.target.value)}
-                            placeholder="End Date"
-                            className="form-input"
-                          />
+                          <input type="month" value={exp.endDate ? new Date(exp.endDate).toISOString().slice(0, 7) : ''} onChange={(e) => handleExperienceChange(index, 'endDate', e.target.value)} className="form-input" />
                         )}
                         <label className="checkbox-label">
-                          <input
-                            type="checkbox"
-                            checked={exp.current}
-                            onChange={(e) => handleExperienceChange(index, 'current', e.target.checked)}
-                          />
+                          <input type="checkbox" checked={exp.current} onChange={(e) => handleExperienceChange(index, 'current', e.target.checked)} />
                           Currently Working
                         </label>
                       </div>
-                      <textarea
-                        value={exp.description}
-                        onChange={(e) => handleExperienceChange(index, 'description', e.target.value)}
-                        placeholder="Job description and achievements..."
-                        rows="4"
-                        className="form-textarea"
-                      />
-                      <button 
-                        onClick={() => handleExperienceRemove(index)}
-                        className="btn-remove-large"
-                      >
+                      <textarea value={exp.description} onChange={(e) => handleExperienceChange(index, 'description', e.target.value)} placeholder="Job description and achievements..." rows="4" className="form-textarea" />
+                      <button onClick={() => handleExperienceRemove(index)} className="btn-remove-large">
                         <FiTrash2 /> Remove Experience
                       </button>
                     </div>
@@ -575,17 +458,13 @@ export default Profile;
                         </div>
                         <span className="exp-type">{exp.employmentType}</span>
                       </div>
-                      <p className="exp-location">
-                        <FiMapPin /> {exp.location}
-                      </p>
+                      <p className="exp-location"><FiMapPin /> {exp.location}</p>
                       <p className="exp-duration">
                         {exp.startDate && new Date(exp.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                         {' - '}
                         {exp.current ? 'Present' : exp.endDate && new Date(exp.endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                       </p>
-                      {exp.description && (
-                        <p className="exp-description">{exp.description}</p>
-                      )}
+                      {exp.description && <p className="exp-description">{exp.description}</p>}
                     </div>
                   )}
                 </div>
@@ -613,61 +492,18 @@ export default Profile;
                   {editing ? (
                     <div className="education-form">
                       <div className="form-row">
-                        <input
-                          type="text"
-                          value={edu.degree}
-                          onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
-                          placeholder="Degree (e.g., B.Tech in Computer Science)"
-                          className="form-input"
-                        />
-                        <input
-                          type="text"
-                          value={edu.university}
-                          onChange={(e) => handleEducationChange(index, 'university', e.target.value)}
-                          placeholder="University/College"
-                          className="form-input"
-                        />
+                        <input type="text" value={edu.degree} onChange={(e) => handleEducationChange(index, 'degree', e.target.value)} placeholder="Degree (e.g., B.Tech in Computer Science)" className="form-input" />
+                        <input type="text" value={edu.university} onChange={(e) => handleEducationChange(index, 'university', e.target.value)} placeholder="University/College" className="form-input" />
                       </div>
                       <div className="form-row">
-                        <input
-                          type="text"
-                          value={edu.fieldOfStudy}
-                          onChange={(e) => handleEducationChange(index, 'fieldOfStudy', e.target.value)}
-                          placeholder="Field of Study"
-                          className="form-input"
-                        />
-                        <input
-                          type="text"
-                          value={edu.grade}
-                          onChange={(e) => handleEducationChange(index, 'grade', e.target.value)}
-                          placeholder="Grade/CGPA"
-                          className="form-input"
-                        />
+                        <input type="text" value={edu.fieldOfStudy} onChange={(e) => handleEducationChange(index, 'fieldOfStudy', e.target.value)} placeholder="Field of Study" className="form-input" />
+                        <input type="text" value={edu.grade} onChange={(e) => handleEducationChange(index, 'grade', e.target.value)} placeholder="Grade/CGPA" className="form-input" />
                       </div>
                       <div className="form-row">
-                        <input
-                          type="number"
-                          value={edu.startYear}
-                          onChange={(e) => handleEducationChange(index, 'startYear', e.target.value)}
-                          placeholder="Start Year"
-                          min="1950"
-                          max="2030"
-                          className="form-input"
-                        />
-                        <input
-                          type="number"
-                          value={edu.endYear}
-                          onChange={(e) => handleEducationChange(index, 'endYear', e.target.value)}
-                          placeholder="End Year"
-                          min="1950"
-                          max="2030"
-                          className="form-input"
-                        />
+                        <input type="number" value={edu.startYear} onChange={(e) => handleEducationChange(index, 'startYear', e.target.value)} placeholder="Start Year" min="1950" max="2030" className="form-input" />
+                        <input type="number" value={edu.endYear} onChange={(e) => handleEducationChange(index, 'endYear', e.target.value)} placeholder="End Year" min="1950" max="2030" className="form-input" />
                       </div>
-                      <button 
-                        onClick={() => handleEducationRemove(index)}
-                        className="btn-remove-large"
-                      >
+                      <button onClick={() => handleEducationRemove(index)} className="btn-remove-large">
                         <FiTrash2 /> Remove Education
                       </button>
                     </div>
@@ -675,16 +511,10 @@ export default Profile;
                     <div className="education-display">
                       <h4 className="edu-degree">{edu.degree}</h4>
                       <p className="edu-university">{edu.university}</p>
-                      {edu.fieldOfStudy && (
-                        <p className="edu-field">{edu.fieldOfStudy}</p>
-                      )}
+                      {edu.fieldOfStudy && <p className="edu-field">{edu.fieldOfStudy}</p>}
                       <div className="edu-meta">
-                        <span className="edu-year">
-                          {edu.startYear} - {edu.endYear}
-                        </span>
-                        {edu.grade && (
-                          <span className="edu-grade">Grade: {edu.grade}</span>
-                        )}
+                        <span className="edu-year">{edu.startYear} - {edu.endYear}</span>
+                        {edu.grade && <span className="edu-grade">Grade: {edu.grade}</span>}
                       </div>
                     </div>
                   )}
@@ -701,74 +531,32 @@ export default Profile;
           <h3 className="section-title">🔗 Social Links</h3>
           <div className="social-links-grid">
             <div className="form-group">
-              <label>
-                <FiLinkedin /> LinkedIn
-              </label>
+              <label><FiLinkedin /> LinkedIn</label>
               {editing ? (
-                <input
-                  type="url"
-                  name="socialLinks.linkedin"
-                  value={formData.socialLinks?.linkedin || ''}
-                  onChange={handleChange}
-                  placeholder="https://linkedin.com/in/yourname"
-                />
+                <input type="url" name="socialLinks.linkedin" value={formData.socialLinks?.linkedin || ''} onChange={handleChange} placeholder="https://linkedin.com/in/yourname" />
               ) : (
                 <p className="form-value">
-                  {user?.socialLinks?.linkedin ? (
-                    <a href={user.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                      {user.socialLinks.linkedin}
-                    </a>
-                  ) : (
-                    'Not provided'
-                  )}
+                  {user?.socialLinks?.linkedin ? <a href={user.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">{user.socialLinks.linkedin}</a> : 'Not provided'}
                 </p>
               )}
             </div>
             <div className="form-group">
-              <label>
-                <FiGithub /> GitHub
-              </label>
+              <label><FiGithub /> GitHub</label>
               {editing ? (
-                <input
-                  type="url"
-                  name="socialLinks.github"
-                  value={formData.socialLinks?.github || ''}
-                  onChange={handleChange}
-                  placeholder="https://github.com/yourname"
-                />
+                <input type="url" name="socialLinks.github" value={formData.socialLinks?.github || ''} onChange={handleChange} placeholder="https://github.com/yourname" />
               ) : (
                 <p className="form-value">
-                  {user?.socialLinks?.github ? (
-                    <a href={user.socialLinks.github} target="_blank" rel="noopener noreferrer">
-                      {user.socialLinks.github}
-                    </a>
-                  ) : (
-                    'Not provided'
-                  )}
+                  {user?.socialLinks?.github ? <a href={user.socialLinks.github} target="_blank" rel="noopener noreferrer">{user.socialLinks.github}</a> : 'Not provided'}
                 </p>
               )}
             </div>
             <div className="form-group">
-              <label>
-                <FiGlobe /> Portfolio
-              </label>
+              <label><FiGlobe /> Portfolio</label>
               {editing ? (
-                <input
-                  type="url"
-                  name="socialLinks.portfolio"
-                  value={formData.socialLinks?.portfolio || ''}
-                  onChange={handleChange}
-                  placeholder="https://yourwebsite.com"
-                />
+                <input type="url" name="socialLinks.portfolio" value={formData.socialLinks?.portfolio || ''} onChange={handleChange} placeholder="https://yourwebsite.com" />
               ) : (
                 <p className="form-value">
-                  {user?.socialLinks?.portfolio ? (
-                    <a href={user.socialLinks.portfolio} target="_blank" rel="noopener noreferrer">
-                      {user.socialLinks.portfolio}
-                    </a>
-                  ) : (
-                    'Not provided'
-                  )}
+                  {user?.socialLinks?.portfolio ? <a href={user.socialLinks.portfolio} target="_blank" rel="noopener noreferrer">{user.socialLinks.portfolio}</a> : 'Not provided'}
                 </p>
               )}
             </div>
@@ -794,7 +582,7 @@ export default Profile;
                 </span>
               </label>
             </div>
-            
+
             {editing && (
               <>
                 <div className="form-group">
@@ -812,10 +600,7 @@ export default Profile;
                               : currentTypes.filter(t => t !== type);
                             setFormData(prev => ({
                               ...prev,
-                              jobPreferences: {
-                                ...prev.jobPreferences,
-                                jobTypes: newTypes
-                              }
+                              jobPreferences: { ...prev.jobPreferences, jobTypes: newTypes }
                             }));
                           }}
                         />
@@ -824,15 +609,9 @@ export default Profile;
                     ))}
                   </div>
                 </div>
-
                 <div className="form-group">
                   <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      name="jobPreferences.willingToRelocate"
-                      checked={formData.jobPreferences?.willingToRelocate || false}
-                      onChange={handleChange}
-                    />
+                    <input type="checkbox" name="jobPreferences.willingToRelocate" checked={formData.jobPreferences?.willingToRelocate || false} onChange={handleChange} />
                     Willing to Relocate
                   </label>
                 </div>
@@ -857,6 +636,7 @@ export default Profile;
             )}
           </div>
         </div>
+
       </div>
     </div>
   );
