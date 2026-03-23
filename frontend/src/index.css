@@ -46,6 +46,9 @@
 html, body {
   overflow-x: hidden;
 }
+body {
+  overflow-x: clip;
+}
 
 body {
   margin: 0;
