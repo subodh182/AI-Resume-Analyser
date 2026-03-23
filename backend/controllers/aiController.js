@@ -70,7 +70,7 @@ const regenerateSummary = async (req, res) => {
 // @desc    Generate interview questions based on resume
 // @route   POST /api/ai/interview-questions
 // @access  Private
-exports.generateInterviewQuestions = async (req, res) => {
+const generateInterviewQuestions = async (req, res) => {
   try {
     const { resumeId, difficulty, count } = req.body;
 
