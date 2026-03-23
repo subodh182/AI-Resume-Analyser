@@ -1,0 +1,129 @@
+.summary-generator-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.summary-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.generator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.input-section,
+.output-section {
+  background: var(--gradient-card);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+}
+
+.tone-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.tone-card {
+  padding: 16px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tone-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.tone-card.active {
+  border-color: var(--primary);
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.tone-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.tone-card p {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.btn-generate {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-copy:hover {
+  background: var(--primary-dark);
+}
+
+.summary-output {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  line-height: 1.8;
+}
+
+.summary-output p {
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.output-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 968px) {
+  .generator-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tone-options {
+    grid-template-columns: 1fr;
+  }
+}

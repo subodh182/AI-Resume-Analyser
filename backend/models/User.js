@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please provide an email'],
     unique: true,
     lowercase: true,
+    trim: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       'Please provide a valid email'
@@ -28,55 +29,87 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'recruiter', 'admin'],
     default: 'user'
   },
-  isVerified: {
-    type: Boolean,
-    default: false
-  },
-  verificationToken: String,
-  verificationTokenExpire: Date,
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
-  profilePicture: {
+  
+  // Optional fields
+  phone: {
     type: String,
     default: ''
   },
-  phoneNumber: {
+  skills: {
+    type: Array,
+    default: []
+  },
+  experience: {
+    type: Array,
+    default: []
+  },
+  education: {
+    type: Array,
+    default: []
+  },
+  
+  // Profile fields
+  profilePhoto: {
     type: String,
     default: ''
   },
   location: {
+    city: String,
+    state: String,
+    country: String
+  },
+  currentPosition: {
     type: String,
     default: ''
   },
-  bio: {
+  currentCompany: {
     type: String,
     default: ''
   },
-  skills: [{
-    type: String
-  }],
-  experience: {
-    type: String,
-    default: ''
+  socialLinks: {
+    linkedin: String,
+    github: String,
+    portfolio: String
   },
-  education: {
-    type: String,
-    default: ''
+  
+  // Email verification (optional - for future)
+  isVerified: {
+    type: Boolean,
+    default: true // Set to true for now, false when email verification is implemented
+  },
+  verificationToken: String,
+  verificationTokenExpire: Date,
+  
+  // Password reset (optional - for future)
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
+  
+  // Timestamps
+  lastActive: {
+    type: Date,
+    default: Date.now
   }
 }, {
   timestamps: true
 });
 
-// Encrypt password before saving
+// Hash password before saving
 userSchema.pre('save', async function(next) {
+  // Only hash if password is modified
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
-// Match user password
+// Match user entered password to hashed password in database
 userSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
