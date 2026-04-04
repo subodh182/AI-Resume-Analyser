@@ -1,8 +1,12 @@
 const Resume = require('../models/Resume');
 
-const rankResumes = async (req, res) => {
+// @desc    Rank multiple resumes
+// @route   POST /api/resume/rank
+// @access  Private
+exports.rankResumes = async (req, res) => {
   try {
     const { resumeIds } = req.body;
+
     if (!resumeIds || resumeIds.length < 2) {
       return res.status(400).json({
         success: false,
@@ -26,7 +30,8 @@ const rankResumes = async (req, res) => {
       const atsScore = resume.analysis?.atsScore || 0;
       const overallScore = resume.analysis?.overallScore || 0;
       const skillsCount = resume.analysis?.skills?.length || 0;
-      const finalScore = (atsScore * 0.4) + (overallScore * 0.4) + (skillsCount * 0.2);
+      
+      const finalScore = Math.round((atsScore * 0.4) + (overallScore * 0.4) + (skillsCount * 0.2));
 
       return {
         resumeId: resume._id,
@@ -34,12 +39,13 @@ const rankResumes = async (req, res) => {
         atsScore,
         overallScore,
         skillsCount,
-        finalScore: Math.round(finalScore),
+        finalScore,
         createdAt: resume.createdAt
       };
     });
 
     rankings.sort((a, b) => b.finalScore - a.finalScore);
+
     rankings.forEach((item, index) => {
       item.rank = index + 1;
     });
@@ -58,9 +64,13 @@ const rankResumes = async (req, res) => {
   }
 };
 
-const compareResumes = async (req, res) => {
+// @desc    Compare two resumes
+// @route   POST /api/resume/compare
+// @access  Private
+exports.compareResumes = async (req, res) => {
   try {
     const { resumeIds } = req.body;
+
     if (!resumeIds || resumeIds.length !== 2) {
       return res.status(400).json({
         success: false,
@@ -86,22 +96,21 @@ const compareResumes = async (req, res) => {
         fileName: resumes[0].fileName,
         atsScore: resumes[0].analysis?.atsScore || 0,
         overallScore: resumes[0].analysis?.overallScore || 0,
-        skills: resumes[0].analysis?.skills || [],
-        sections: resumes[0].analysis?.sections || []
+        skills: resumes[0].analysis?.skills || []
       },
       resume2: {
         id: resumes[1]._id,
         fileName: resumes[1].fileName,
         atsScore: resumes[1].analysis?.atsScore || 0,
         overallScore: resumes[1].analysis?.overallScore || 0,
-        skills: resumes[1].analysis?.skills || [],
-        sections: resumes[1].analysis?.sections || []
+        skills: resumes[1].analysis?.skills || []
       },
       winner: null
     };
 
     const score1 = (comparison.resume1.atsScore + comparison.resume1.overallScore) / 2;
     const score2 = (comparison.resume2.atsScore + comparison.resume2.overallScore) / 2;
+    
     comparison.winner = score1 > score2 ? 'resume1' : score2 > score1 ? 'resume2' : 'tie';
 
     res.json({
