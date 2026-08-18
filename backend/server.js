@@ -10,7 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const userRoutes = require('./routes/userRoutes');
-// const applicationRoutes = require('./routes/applicationRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
 const errorHandler = require('./middleware/errorHandler');
 const jobMatchRoutes = require('./routes/jobMatchRoutes');
 const aiRoutes = require('./routes/aiRoutes');
@@ -129,7 +129,7 @@ app.use('/api/jobs', jobRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/job-match', jobMatchRoutes);
 app.use('/api/ai', aiRoutes);
-// app.use('/api/applications', applicationRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // =============================================
 // 404 Handler
